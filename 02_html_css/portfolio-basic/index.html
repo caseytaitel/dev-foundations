@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Casey Taitel | Portfolio</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <h1>Welcome</h1>
+    <p>Building my web development foundations.</p>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <img src="assets/headshot.jpg" alt="Headshot of Casey Taitel smiling near the ocean">
+      <p>Hey, I’m Casey Taitel — a lifelong surfer learning to code. After years chasing waves across Indonesia, Portugal, and California, I’m now chasing cleaner data and better software.</p>
+      <p>My goal is to build <strong>SurfGuard</strong> — a real-time surf safety platform that uses satellite and sonar data to warn surfers of dangerous currents, sharks, and jellyfish before they paddle out.</p>
+      <ul>
+        <li><em>Highlights</em></li>
+        <li>10+ years surfing worldwide</li>
+        <li>Currently learning full-stack JavaScript</li>
+        <li>Dream: merge surf culture with advanced ocean tech</li>
+      </ul>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <article>
+        <h3>SurfGuard Prototype</h3>
+        <p>Early web app mockup using live buoy data and satellite feeds.</p>
+        <a href="#" aria-label="View SurfGuard">View</a>
+      </article>
+      <article>
+        <h3>TideTracker</h3>
+        <p>Lightweight app that predicts tides and wave consistency for any coastline.</p>
+        <a href="#" aria-label="View TideTracker">View</a>
+      </article>
+      <article>
+        <h3>WaveViz</h3>
+        <p>Interactive dashboard showing global swell maps with real-time overlays.</p>
+        <a href="#" aria-label="View WaveViz">View</a>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <small>&copy; <span id="year"></span> Casey Taitel</small>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>
