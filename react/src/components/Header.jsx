@@ -1,4 +1,11 @@
 export default function Header({ title }) {
-    return <header><h1>{title}</h1></header>;
-  }
+  const showTitle = title && title.trim().length > 0;
+
+  return (
+    <header>
+      {showTitle ? <h1>{title}</h1> : <h1>No title provided</h1>}
+    </header>
+  );
+}
+
   
