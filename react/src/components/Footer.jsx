@@ -1,4 +1,7 @@
 export default function Footer({ year }) {
-    return <footer>© {year}</footer>;
-  }
-  
+  return (
+    <footer>
+      <div className="footer-content">© {year}</div>
+    </footer>
+  );
+}
