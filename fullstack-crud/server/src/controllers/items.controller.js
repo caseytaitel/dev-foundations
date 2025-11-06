@@ -1,40 +1,53 @@
-let items = [{ id: 1, name: "Example", createdAt: new Date().toISOString() }];
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-export const listItems = (req, res) => res.json(items);
-
-export const getItem = (req, res) => {
-  const id = Number(req.params.id);
-  const found = items.find(i => i.id === id);
-  if (!found) return res.status(404).json({ error: "Not found" });
-  res.json(found);
+export const listItems = async (req, res, next) => {
+  try {
+    const items = await prisma.item.findMany();
+    res.json(items);
+  } catch (err) { next(err); }
 };
 
-export const createItem = (req, res) => {
-  const { name } = req.body;
-  if (typeof name !== "string" || !name.trim()) {
-    return res.status(400).json({ error: "name required" });
+export const getItem = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const item = await prisma.item.findUnique({ where: { id } });
+    if (!item) return res.status(404).json({ error: "Not found" });
+    res.json(item);
+  } catch (err) { next(err); }
+};
+
+export const createItem = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    if (typeof name !== "string" || !name.trim())
+      return res.status(400).json({ error: "name required" });
+    const item = await prisma.item.create({ data: { name } });
+    res.status(201).json(item);
+  } catch (err) { next(err); }
+};
+
+export const updateItem = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const { name } = req.body;
+    if (name !== undefined && !String(name).trim())
+      return res.status(400).json({ error: "invalid name" });
+    const item = await prisma.item.update({ where: { id }, data: { name } });
+    res.json(item);
+  } catch (err) {
+    if (err.code === "P2025") return res.status(404).json({ error: "Not found" });
+    next(err);
   }
-  const id = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
-  const item = { id, name, createdAt: new Date().toISOString() };
-  items.push(item);
-  res.status(201).json(item);
 };
 
-export const updateItem = (req, res) => {
-  const id = Number(req.params.id);
-  const { name } = req.body;
-  const idx = items.findIndex(i => i.id === id);
-  if (name !== undefined && !String(name).trim()) {
-    return res.status(400).json({ error: "invalid name" });
+export const deleteItem = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    await prisma.item.delete({ where: { id } });
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === "P2025") return res.status(404).json({ error: "Not found" });
+    next(err);
   }
-  items[idx] = { ...items[idx], name: name ?? items[idx].name };
-  res.json(items[idx]);
-};
-
-export const deleteItem = (req, res) => {
-  const id = Number(req.params.id);
-  const before = items.length;
-  items = items.filter(i => i.id !== id);
-  if (items.length === before) return res.status(404).json({ error: "Not found" });
-  res.status(204).send();
 };
