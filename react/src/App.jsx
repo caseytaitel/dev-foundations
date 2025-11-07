@@ -1,55 +1,58 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Button from "./components/Button";
-import Counter from "./components/Counter";
-import NameForm from "./components/NameForm";
-import SearchBox from "./components/SearchBox";
-import ItemList from "./components/ItemList";
-import TodoList from "./components/TodoList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getItems, createItem, updateItem, deleteItem } from "./api.js";
 
 export default function App() {
-  const title = "React Foundations -- Demo";
-  const year = new Date().getFullYear();
+  const [items, setItems] = useState([]);
+  const [newName, setNewName] = useState("");
 
-  const [query, setQuery] = useState("");
-  const items = ["Apple", "Banana", "Cherry", "Date"];
+  // Load from API on mount
+  useEffect(() => {
+    getItems().then(setItems);
+  }, []);
 
-  function handleClick() {
-    alert("Button clicked!");
+  async function handleAdd(e) {
+    e.preventDefault();
+    if (!newName.trim()) return;
+    const item = await createItem(newName);
+    setItems([...items, item]);
+    setNewName("");
   }
 
+  async function handleUpdate(id, name) {
+    const updated = await updateItem(id, name);
+    setItems(items.map(i => (i.id === id ? updated : i)));
+  }
+
+  async function handleDelete(id) {
+    await deleteItem(id);
+    setItems(items.filter(i => i.id !== id));
+  }
 
   return (
-    <>
-      <Header title={title} />
-      <main className="container">
-        <section className="card">
-          <h2>State & Events</h2>
-          <Counter />
-          <div className="spacer" />
-          <NameForm />
-        </section>
+    <main className="p-4">
+      <h1 className="text-xl mb-4">Items</h1>
 
-        <section className="card">
-          <h2>Lifted State: Search</h2>
-          <SearchBox query={query} onChange={setQuery} />
-          <ItemList items={items} query={query} />
-        </section>
+      <form onSubmit={handleAdd}>
+        <input
+          value={newName}
+          onChange={e => setNewName(e.target.value)}
+          placeholder="New item"
+          className="border p-2 mr-2"
+        />
+        <button className="bg-blue-500 text-white p-2 rounded">Add</button>
+      </form>
 
-        <section className="card">
-          <h2>To-Do List</h2>
-          <TodoList />
-        </section>
-
-        <section className="card">
-          <h2>Reusable Button</h2>
-          <Button label="Click Me" onClick={handleClick} />
-        </section>
-      </main>
-      <Footer year={year} />
-    </>
+      <ul className="mt-4">
+        {items.map(item => (
+          <li key={item.id} className="flex items-center justify-between border-b py-1">
+            <span>{item.name}</span>
+            <div>
+              <button onClick={() => handleUpdate(item.id, prompt("Rename:", item.name))} className="mr-2 text-green-600">Edit</button>
+              <button onClick={() => handleDelete(item.id)} className="text-red-600">Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
-
-
