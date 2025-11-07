@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "postinstall": "prisma generate"
+    "postinstall": "npx prisma generate"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
