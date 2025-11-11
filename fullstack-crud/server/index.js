@@ -7,6 +7,12 @@ dotenv.config();
 
 const app = express();
 
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+console.log("N8N_WEBHOOK_URL:", N8N_WEBHOOK_URL);
+if (!N8N_WEBHOOK_URL) {
+  console.error("N8N_WEBHOOK_URL is not set");
+}
+
 app.use((req, _res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
@@ -18,11 +24,6 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("API running"));
 
 app.use("/api/items", itemsRouter); 
-
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
-if (!N8N_WEBHOOK_URL) {
-  console.error("N8N_WEBHOOK_URL is not set");
-}
 
 app.post("/api/ai", async (req, res) => {
   try {
