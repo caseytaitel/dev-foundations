@@ -19,7 +19,10 @@ app.get("/", (req, res) => res.send("API running"));
 
 app.use("/api/items", itemsRouter); 
 
-const N8N_WEBHOOK_URL = "http://localhost:5678/webhook/test";
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+if (!N8N_WEBHOOK_URL) {
+  console.error("N8N_WEBHOOK_URL is not set");
+}
 
 app.post("/api/ai", async (req, res) => {
   try {
