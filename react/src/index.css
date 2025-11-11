@@ -1,94 +1,28 @@
-:root{
-  --bg:#0f172a;        /* slate-900 */
-  --panel:#111827;     /* gray-900 */
-  --text:#e5e7eb;      /* gray-200 */
-  --muted:#9ca3af;     /* gray-400 */
-  --brand:#60a5fa;     /* blue-400 */
-  --accent:#34d399;    /* emerald-400 */
-  --radius:16px;
-  --shadow:0 10px 20px rgba(0,0,0,.25);
+/* Global reset / base */
+
+* {
+  box-sizing: border-box;
 }
 
-*{box-sizing:border-box}
-html,body,#root{height:100%}
-body{
-  margin:0;
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-  color:var(--text);
-  background:linear-gradient(180deg, #0b1022 0%, var(--bg) 100%);
+  background-color: #f3f4f6; /* light neutral base; layout handled in App.css */
+  color: #111827;
 }
 
-header, footer{
-  backdrop-filter: blur(8px);
-  background: rgba(17,24,39,.6);
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-footer{
-  border-top:1px solid rgba(255,255,255,.08);
-  border-bottom:none;
-}
-.footer-content {
-  padding: 16px 20px;
-}
+/* Ensure form controls inherit typography */
 
-header h1, footer{
-  margin:0;
-  padding:16px 20px;
-}
-
-.container{
-  max-width:960px;
-  margin:24px auto 48px;
-  padding:0 16px;
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:16px;
-}
-@media(min-width:900px){
-  .container{ grid-template-columns: 1fr 1fr; }
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--radius);
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-h2{ margin:0 0 12px }
-p{ color:var(--muted); line-height:1.5 }
-
-input, button{
+input,
+textarea,
+button {
   font: inherit;
-  color:var(--text);
 }
-input{
-  width:100%;
-  padding:10px 12px;
-  margin:6px 0 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background:#0b1222;
-  outline:none;
-}
-input::placeholder{ color:#7a8292 }
-
-button{
-  padding:8px 12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background: linear-gradient(180deg, #1d263d, #111827);
-  cursor:pointer;
-}
-button:hover{ border-color: rgba(255,255,255,.28) }
-button:active{ transform: translateY(1px) }
-
-ul{ margin:8px 0 0; padding-left:18px }
-li{
-  margin:6px 0;
-  display:flex; align-items:center; gap:8px;
-}
-li button{ padding:4px 8px }
-
-.spacer{ height:12px }
