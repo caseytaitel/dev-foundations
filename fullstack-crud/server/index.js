@@ -8,7 +8,6 @@ dotenv.config();
 const app = express();
 
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
-console.log("N8N_WEBHOOK_URL:", N8N_WEBHOOK_URL);
 if (!N8N_WEBHOOK_URL) {
   console.error("N8N_WEBHOOK_URL is not set");
 }
