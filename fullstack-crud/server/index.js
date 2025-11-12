@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
 if (!N8N_WEBHOOK_URL) {
   console.error("N8N_WEBHOOK_URL is not set");
 }
@@ -25,6 +25,12 @@ app.get("/", (req, res) => res.send("API running"));
 app.use("/api/items", itemsRouter); 
 
 app.post("/api/ai", async (req, res) => {
+  if (!N8N_WEBHOOK_URL) {
+    return res
+      .status(501)
+      .json({error: "AI endpoint disabled. Available only in local dev."})
+  }
+
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
@@ -33,7 +39,7 @@ app.post("/api/ai", async (req, res) => {
     });
   
     if (!response.ok) {
-      const text = await response.text();
+      const text = await response.text().catch(() => "");
       console.error("n8n error response:", response.status, text);
       return res
         .status(500)
